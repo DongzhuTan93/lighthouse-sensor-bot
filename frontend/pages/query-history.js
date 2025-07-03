@@ -189,7 +189,7 @@ export default function QueryHistory() {
               </div>
             ) : (
               queryHistory.map((query) => (
-                <div key={query.id} className="bg-white bg-opacity-95 rounded-xl shadow-lg border border-gray-100">
+                <div key={query.id} className="bg-white bg-opacity-95 rounded-xl shadow-lg border border-gray-100 overflow-hidden">
                   <div className="p-6">
                     <div className="flex items-start justify-between">
                       <div className="flex items-start space-x-4 flex-1">
@@ -204,7 +204,7 @@ export default function QueryHistory() {
                         </div>
                         
                         {/* Query Content */}
-                        <div className="flex-1">
+                        <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center space-x-3">
                               <span className="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
@@ -231,7 +231,7 @@ export default function QueryHistory() {
                           {/* Query Question */}
                           <div className="mb-3">
                             <h3 className="font-medium text-gray-800 mb-1">Question:</h3>
-                            <p className="text-gray-700 bg-gray-50 p-3 rounded-lg">
+                            <p className="text-gray-700 bg-gray-50 p-3 rounded-lg break-words overflow-wrap-anywhere">
                               {query.question}
                             </p>
                           </div>
@@ -241,7 +241,7 @@ export default function QueryHistory() {
                             <h3 className="font-medium text-gray-800 mb-1">Response:</h3>
                             <div className="relative">
                               {expandedQuery === query.id ? (
-                                <div className="border rounded-lg">
+                                <div className="border rounded-lg overflow-hidden">
                                   {/* Close button when expanded */}
                                   <div className="flex justify-end p-2 bg-gray-100 border-b border-gray-200">
                                     <button
@@ -254,57 +254,63 @@ export default function QueryHistory() {
                                       </svg>
                                     </button>
                                   </div>
-                                  <div className="max-h-96 overflow-auto">
-                                    <div className="p-4">
-                                      <ReactMarkdown
-                                        className="prose prose-sm max-w-none text-gray-700"
-                                        components={{
-                                          code({ node, inline, className, children, ...props }) {
-                                            const match = /language-(\w+)/.exec(className || '')
-                                            const language = match ? match[1] : 'text'
-                                            return !inline && (language === 'sql' || language === 'mysql') ? (
-                                              <div className="w-full overflow-x-auto bg-gray-900 rounded my-2">
-                                                <SyntaxHighlighter
-                                                  language="sql"
-                                                  style={vscDarkPlus}
-                                                  customStyle={{
-                                                    margin: 0,
-                                                    borderRadius: '0.25rem',
-                                                    fontSize: '0.75rem',
-                                                    padding: '0.75rem',
-                                                    minWidth: '100%',
-                                                    width: 'max-content'
-                                                  }}
-                                                  wrapLines={false}
-                                                  {...props}
-                                                >
-                                                  {String(children).replace(/\n$/, '')}
-                                                </SyntaxHighlighter>
-                                              </div>
-                                            ) : (
-                                              <code className="bg-gray-200 px-1 py-0.5 rounded text-gray-800" {...props}>
-                                                {children}
-                                              </code>
-                                            )
-                                          }
-                                        }}
-                                      >
-                                        {query.response}
-                                      </ReactMarkdown>
+                                  <div className="max-h-96 overflow-auto bg-gray-50">
+                                    <div className="px-4 py-4">
+                                      <div className="min-w-0 w-full">
+                                        <ReactMarkdown
+                                          className="prose prose-sm max-w-none text-gray-700 break-words overflow-wrap-anywhere"
+                                          components={{
+                                            code({ node, inline, className, children, ...props }) {
+                                              const match = /language-(\w+)/.exec(className || '')
+                                              const language = match ? match[1] : 'text'
+                                              return !inline && (language === 'sql' || language === 'mysql') ? (
+                                                <div className="bg-gray-900 rounded my-2 overflow-hidden min-w-0">
+                                                  <SyntaxHighlighter
+                                                    language="sql"
+                                                    style={vscDarkPlus}
+                                                    customStyle={{
+                                                      margin: 0,
+                                                      borderRadius: '0.25rem',
+                                                      fontSize: '0.75rem',
+                                                      padding: '0.75rem',
+                                                      width: '100%',
+                                                      maxWidth: '100%',
+                                                      overflow: 'auto'
+                                                    }}
+                                                    showLineNumbers={false}
+                                                    wrapLines={false}
+                                                    {...props}
+                                                  >
+                                                    {String(children).replace(/\n$/, '')}
+                                                  </SyntaxHighlighter>
+                                                </div>
+                                              ) : (
+                                                <code className="bg-gray-200 px-1 py-0.5 rounded text-gray-800 break-all overflow-wrap-anywhere" {...props}>
+                                                  {children}
+                                                </code>
+                                              )
+                                            }
+                                          }}
+                                        >
+                                          {query.response}
+                                        </ReactMarkdown>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
                               ) : (
                                 <div 
-                                  className="border rounded-lg cursor-pointer hover:bg-gray-50 transition-colors border-2 border-transparent hover:border-blue-200"
+                                  className="border rounded-lg cursor-pointer hover:bg-gray-50 transition-colors border-2 border-transparent hover:border-blue-200 overflow-hidden"
                                   onClick={() => toggleExpanded(query.id)}
                                   title="Click to expand full response"
                                 >
-                                  <p className="text-gray-700 p-4">
-                                    {truncateText(query.response.replace(/[#*`_~]/g, ''))}
-                                  </p>
+                                  <div className="bg-gray-50 mx-4 mt-4 rounded-lg">
+                                    <p className="text-gray-700 px-4 py-4 break-words overflow-wrap-anywhere">
+                                      {truncateText(query.response.replace(/[#*`_~]/g, ''))}
+                                    </p>
+                                  </div>
                                   {/* Visual indicator that it's clickable */}
-                                  <div className="text-right p-2 text-xs text-gray-500">
+                                  <div className="text-right px-4 pb-2 text-xs text-gray-500">
                                     Click to expand full response
                                   </div>
                                 </div>
