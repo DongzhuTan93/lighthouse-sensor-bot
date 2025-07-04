@@ -7,6 +7,7 @@ export default function Navigation() {
   const { connected } = useWebSocket();
   const [backendStatus, setBackendStatus] = useState("offline");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Check backend status on component mount
   useEffect(() => {
@@ -55,6 +56,24 @@ export default function Navigation() {
       }
     }
   };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMobileMenuOpen]);
 
   return (
     <>
@@ -107,7 +126,7 @@ export default function Navigation() {
               </Link>
               <div className="flex items-center">
                 <span className={`backend-status-indicator ${backendStatus === "online" ? 'online' : 'offline'}`}></span>
-                <span className="ml-2 text-sm text-white text-opacity-80">
+                <span className="text-white font-medium">
                   Backend {backendStatus === "online" ? 'connected' : 'disconnected'}
                 </span>
               </div>

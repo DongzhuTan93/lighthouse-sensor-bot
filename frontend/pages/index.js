@@ -423,7 +423,7 @@ export default function QuestionForm() {
       <div className="mt-4 bg-white bg-opacity-10 rounded-xl p-4">
         <div
           ref={queriesContainerRef}
-          className="space-y-2 max-h-60 overflow-y-auto"
+                      className="space-y-2 max-h-60 overflow-y-auto px-2"
         >
           {sqlQueries.map((query, index) => (
             <div key={index} className="rounded">
@@ -841,6 +841,18 @@ export default function QuestionForm() {
                   <div className="block w-full rounded border border-gray-300 px-2 py-1.5 text-gray-700 bg-gray-50 text-xs">
                     Ferry Trips Data (CSV)
                   </div>
+                  <div className="mt-2 p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                    <p className="text-xs text-gray-600 mb-2 font-medium">Available Data:</p>
+                    <div className="grid grid-cols-1 gap-1 text-xs text-gray-600">
+                      <div>• Ferry information, routes, vessel types</div>
+                      <div>• Trip details, times, distances, performance</div>
+                      <div>• Passenger load statistics, traffic patterns</div>
+                      <div>• Environmental impact, operational costs</div>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-2 italic">
+                      Ask about ferry operations, routes, performance metrics, or comparisons.
+                    </p>
+                  </div>
                 </div>
 
                 {controlMode === "query" ? (
@@ -979,6 +991,7 @@ export default function QuestionForm() {
                   </div>
                 </div>
   
+                </div>
               </div>
             </div>
           </div>
@@ -996,7 +1009,7 @@ export default function QuestionForm() {
               </div>
 
               <div className="mb-3">
-                <div className="response-container rounded-lg p-3 max-h-48 overflow-y-auto border border-gray-300 bg-white bg-opacity-10">
+                <div className="response-container rounded-lg py-3 px-5 max-h-48 overflow-y-auto border border-gray-300 bg-white bg-opacity-10">
                   {/* COMMENTED OUT - Evaluation Mode functionality */}
                   {/* controlMode === "evaluation" && activeQuery ? (
                  
@@ -1063,9 +1076,9 @@ export default function QuestionForm() {
                         <div id="sql-data-container" className="w-full flex-1 min-h-0 overflow-hidden">
                           {sqlQueries.length > 0 ? (
                             <div className="bg-white bg-opacity-10 rounded-xl p-4 h-full w-full">
-                              <div
+                                                              <div
                                 ref={queriesContainerRef}
-                                className="space-y-2 overflow-y-auto h-full w-full"
+                                className="space-y-2 overflow-y-auto h-full w-full px-2"
                               >
                                 {sqlQueries.map((query, index) => (
                                   <div key={index} className="rounded w-full">
@@ -1105,7 +1118,7 @@ export default function QuestionForm() {
                             <div className="bg-white bg-opacity-10 rounded-xl p-4 h-full">
                               <div
                                 ref={queriesContainerRef}
-                                className="space-y-2 overflow-y-auto h-full"
+                                className="space-y-2 overflow-y-auto h-full px-2"
                               >
                                 {sqlQueries.map((query, index) => (
                                   <div key={index} className="rounded">
@@ -1136,7 +1149,7 @@ export default function QuestionForm() {
 
                     <div id="full-response-content" className="tab-pane hidden h-full">
                       <div className="h-full w-full flex flex-col">
-                        <div className="w-full flex-1 min-h-0 overflow-y-auto bg-white bg-opacity-10 rounded-xl p-4">
+                        <div className="w-full flex-1 min-h-0 overflow-y-auto bg-white bg-opacity-10 rounded-xl py-4 px-6">
                           <ReactMarkdown
                             className="prose prose-sm max-w-none text-gray-200"
                             components={{
