@@ -13,6 +13,24 @@ export default function Navigation() {
     testConnection(false);
   }, []);
 
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMobileMenuOpen]);
+
   const testConnection = async (showAlert = true) => {
     try {
       const response = await fetch("/api/test");
@@ -38,24 +56,6 @@ export default function Navigation() {
     }
   };
 
-  const closeMobileMenu = () => {
-    setIsMobileMenuOpen(false);
-  };
-
-  // Prevent body scroll when mobile menu is open
-  useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    
-    // Cleanup on unmount
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [isMobileMenuOpen]);
-
   return (
     <>
       <nav className="rounded-full mx-2 md:mx-16 mt-4 mb-4 shadow-lg" style={{
@@ -64,78 +64,78 @@ export default function Navigation() {
       }}>
         <div className="container mx-auto px-3 md:px-6 py-4">
           <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <Link href="/">
-                  <a className="flex items-center space-x-3" onClick={closeMobileMenu}>
-                    <Image
-                      src="/logo.png"
-                      alt="Lighthouse Bot Logo"
-                      width={32}
-                      height={32}
-                      className="w-8 h-8"
-                    />
-                    <h1 className="text-lg md:text-xl font-bold text-white">Lighthouse Bot</h1>
-                  </a>
-                </Link>
-              </div>
+            <div className="flex items-center space-x-3">
+              <Link href="/">
+                <a className="flex items-center space-x-3" onClick={closeMobileMenu}>
+                  <Image
+                    src="/logo.png"
+                    alt="Lighthouse Bot Logo"
+                    width={32}
+                    height={32}
+                    className="w-8 h-8"
+                  />
+                  <h1 className="text-lg md:text-xl font-bold text-white">Lighthouse Bot</h1>
+                </a>
+              </Link>
+            </div>
 
-              {/* Desktop Navigation */}
-              <div className="hidden lg:flex items-center space-x-6">
-                <Link href="/">
-                  <a className="text-white hover:text-gray-300 transition-colors font-medium flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
-                    </svg>
-                    New Query
-                  </a>
-                </Link>
-                <Link href="/query-history">
-                  <a className="text-white hover:text-gray-300 transition-colors font-medium flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
-                    </svg>
-                    Query History
-                  </a>
-                </Link>
-                <Link href="/about">
-                  <a className="text-white hover:text-gray-300 transition-colors font-medium flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                    </svg>
-                    About
-                  </a>
-                </Link>
-                <div className="flex items-center">
-                  <span className={`backend-status-indicator ${backendStatus === "online" ? 'online' : 'offline'}`}></span>
-                  <span className="ml-2 text-sm text-white text-opacity-80">
-                    Backend {backendStatus === "online" ? 'connected' : 'disconnected'}
-                  </span>
-                </div>
-              </div>
-
-              {/* Mobile Navigation - Hamburger Button and Status */}
-              <div className="lg:hidden flex items-center space-x-3">
-                {/* Backend Status Indicator for Mobile */}
-                <div className="flex items-center">
-                  <span className={`backend-status-indicator ${backendStatus === "online" ? 'online' : 'offline'}`}></span>
-                </div>
-                
-                {/* Hamburger Button */}
-                <button
-                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                  className="text-white hover:text-gray-300 focus:outline-none focus:text-gray-300 transition-colors"
-                  aria-label="Toggle mobile menu"
-                >
-                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    {isMobileMenuOpen ? (
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    ) : (
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                    )}
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex items-center space-x-6">
+              <Link href="/">
+                <a className="text-white hover:text-gray-300 transition-colors font-medium flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
                   </svg>
-                </button>
+                  New Query
+                </a>
+              </Link>
+              <Link href="/query-history">
+                <a className="text-white hover:text-gray-300 transition-colors font-medium flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
+                  </svg>
+                  Query History
+                </a>
+              </Link>
+              <Link href="/about">
+                <a className="text-white hover:text-gray-300 transition-colors font-medium flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+                  </svg>
+                  About
+                </a>
+              </Link>
+              <div className="flex items-center">
+                <span className={`backend-status-indicator ${backendStatus === "online" ? 'online' : 'offline'}`}></span>
+                <span className="ml-3 text-white font-medium">
+                  Backend {backendStatus === "online" ? 'connected' : 'disconnected'}
+                </span>
               </div>
             </div>
+
+            {/* Mobile Navigation - Hamburger Button and Status */}
+            <div className="lg:hidden flex items-center space-x-3">
+              {/* Backend Status Indicator for Mobile */}
+              <div className="flex items-center">
+                <span className={`backend-status-indicator ${backendStatus === "online" ? 'online' : 'offline'}`}></span>
+              </div>
+              
+              {/* Hamburger Button */}
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="text-white hover:text-gray-300 focus:outline-none focus:text-gray-300 transition-colors"
+                aria-label="Toggle mobile menu"
+              >
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  {isMobileMenuOpen ? (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  ) : (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  )}
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
       </nav>
 
@@ -206,7 +206,7 @@ export default function Navigation() {
                   onClick={closeMobileMenu}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
                   </svg>
                   <span>About</span>
                 </a>
@@ -217,7 +217,7 @@ export default function Navigation() {
             <div className="p-6 border-t border-white border-opacity-20">
               <div className="flex items-center justify-center space-x-3">
                 <span className={`backend-status-indicator ${backendStatus === "online" ? 'online' : 'offline'}`}></span>
-                <span className="text-white font-medium">
+                <span className="ml-3 text-white font-medium">
                   Backend {backendStatus === "online" ? 'connected' : 'disconnected'}
                 </span>
               </div>
