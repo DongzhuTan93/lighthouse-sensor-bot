@@ -107,7 +107,7 @@ export default function Navigation() {
               </Link>
               <div className="flex items-center">
                 <span className={`backend-status-indicator ${backendStatus === "online" ? 'online' : 'offline'}`}></span>
-                <span className="text-white font-medium">
+                <span className="ml-3 text-white font-medium">
                   Backend {backendStatus === "online" ? 'connected' : 'disconnected'}
                 </span>
               </div>
@@ -217,7 +217,7 @@ export default function Navigation() {
             <div className="p-6 border-t border-white border-opacity-20">
               <div className="flex items-center justify-center space-x-3">
                 <span className={`backend-status-indicator ${backendStatus === "online" ? 'online' : 'offline'}`}></span>
-                <span className="text-white font-medium">
+                <span className="ml-3 text-white font-medium">
                   Backend {backendStatus === "online" ? 'connected' : 'disconnected'}
                 </span>
               </div>
