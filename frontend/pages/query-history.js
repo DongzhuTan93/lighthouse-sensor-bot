@@ -241,7 +241,7 @@ export default function QueryHistory() {
                             <h3 className="font-medium text-gray-800 mb-1">Response:</h3>
                             <div className="relative">
                               {expandedQuery === query.id ? (
-                                <div className="border rounded-lg">
+                                <div className="border rounded-lg overflow-hidden">
                                   {/* Close button when expanded */}
                                   <div className="flex justify-end p-2 bg-gray-100 border-b border-gray-200">
                                     <button
@@ -356,7 +356,7 @@ export default function QueryHistory() {
                                     {truncateText(query.response.replace(/[#*`_~]/g, ''))}
                                   </p>
                                   {/* Visual indicator that it's clickable */}
-                                  <div className="text-right p-2 text-xs text-gray-500">
+                                  <div className="text-right px-4 pb-2 text-xs text-gray-500">
                                     Click to expand full response
                                   </div>
                                 </div>
