@@ -744,10 +744,11 @@ export default function QuestionForm() {
                   <div>
                     <h3 className="text-xs font-semibold text-blue-800 mb-1.5">How to Use</h3>
                     <div className="text-xs text-blue-700 space-y-0.5">
-                      <div>1. Select a model (Proprietary or Open Source)</div>
-                      <div>2. Enter your question about ferry data</div>
-                      <div>3. Click "Query" to get AI analysis</div>
-                      <div>4. View results in Live Tool Calls & Full Response tabs</div>
+                      <div>1. Submit your OpenRouter API key</div>
+                      <div>2. Select a model (Proprietary or Open Source)</div>
+                      <div>3. Enter your question about ferry data</div>
+                      <div>4. Click "Query" to get AI analysis</div>
+                      <div>5. View results in Live Tool Calls & Full Response tabs</div>
                     </div>
                   </div>
                 </div>
@@ -817,16 +818,29 @@ export default function QuestionForm() {
                     Ferry Trips Data (CSV)
                   </div>
                   <div className="mt-2 p-2.5 bg-gray-50 border border-gray-200 rounded-lg">
-                    <p className="text-xs text-gray-600 mb-1.5 font-medium">Available Data:</p>
-                    <div className="grid grid-cols-1 gap-0.5 text-xs text-gray-600">
-                      <div>• Ferry information, routes, vessel types</div>
-                      <div>• Trip details, times, distances, performance</div>
-                      <div>• Passenger load statistics, traffic patterns</div>
-                      <div>• Environmental impact, operational costs</div>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <p className="text-xs text-gray-600 font-medium">Ferry Fleet Data Available:</p>
+                      <a 
+                        href="/about" 
+                        className="text-xs text-blue-600 hover:text-blue-800 underline"
+                      >
+                        View Details
+                      </a>
                     </div>
-                    <p className="text-xs text-gray-500 mt-1.5 italic">
-                      Ask about ferry operations, routes, performance metrics, or comparisons.
-                    </p>
+                    <div className="grid grid-cols-1 gap-0.5 text-xs text-gray-600 mb-2">
+                      <div>• <strong>5 Ferries:</strong> Fragancia, Jupiter, Merkurius, Nina, Yxlan</div>
+                      <div>• <strong>Time Period:</strong> March 2023 - February 2024</div>
+                      <div>• <strong>Trip Data:</strong> Routes, times, distances, fuel consumption</div>
+                      <div>• <strong>Load Data:</strong> Passenger cars, vehicles, cargo capacity</div>
+                    </div>
+                    <div className="text-xs text-gray-500 space-y-0.5">
+                      <p className="font-medium">Example Questions:</p>
+                      <div className="ml-2 space-y-0.5">
+                        <div>• "What's the fuel efficiency of ferry Jupiter?"</div>
+                        <div>• "Compare passenger loads between routes"</div>
+                        <div>• "Which ferry has the highest average speed?"</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
