@@ -5,8 +5,8 @@ services:
     image: nginxproxy/nginx-proxy
     container_name: nginx-proxy
     ports:
-      - "8080:80"
-      - "8443:443"
+      - "80:80"
+      - "443:443"
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ~/nginx-proxy/certs:/etc/nginx/certs
@@ -89,10 +89,10 @@ services:
       - DB_PASSWORD=${POSTGRES_PASSWORD}
       - DB_PORT=${DB_PORT}
       - SERVER_URL=${SERVER_URL}
-      - VIRTUAL_HOST=lighthouse.dongzhutan.com
+      - VIRTUAL_HOST=light.vild.ly
       - VIRTUAL_PATH=/api
       - VIRTUAL_PORT=5001
-      - LETSENCRYPT_HOST=lighthouse.dongzhutan.com
+      - LETSENCRYPT_HOST=light.vild.ly
     volumes:
       - ./backend/app/ragas/test_cases:/app/app/ragas/test_cases
     depends_on:
@@ -111,9 +111,9 @@ services:
       - "3000"
     environment:
       - NEXT_PUBLIC_SERVER_URL=${NEXT_PUBLIC_SERVER_URL}
-      - VIRTUAL_HOST=lighthouse.dongzhutan.com
+      - VIRTUAL_HOST=light.vild.ly
       - VIRTUAL_PORT=3000
-      - LETSENCRYPT_HOST=lighthouse.dongzhutan.com
+      - LETSENCRYPT_HOST=light.vild.ly
     depends_on:
       - backend
 
