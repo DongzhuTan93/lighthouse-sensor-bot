@@ -32,48 +32,60 @@ def hello_world():
 
 @api_bp.route("/query", methods=["GET", "POST"])
 def query_endpoint():
-    data = request.get_json()
+    try:
+        data = request.get_json()
 
-    # Get the question from the request FIRST - validate before any expensive operations
-    question = data.get("question", "")
-    
-    # Validate if the question is related to ferry operations BEFORE using API credits
-    if not is_ferry_related_question(question):
-        return jsonify({
-            "error": "Question not related to ferry data",
-            "content": "Please submit a question related to ferry operations and maritime data. You can find information about available data and example questions on the 'About' page.",
-            "suggestion": "Try asking about ferry performance, fuel consumption, routes, schedules, or operational statistics."
-        }), 400
+        # Get the question from the request FIRST - validate before any expensive operations
+        question = data.get("question", "")
+        
+        # Validate if the question is related to ferry operations BEFORE using API credits
+        if not is_ferry_related_question(question):
+            return jsonify({
+                "error": "Question not related to ferry data",
+                "content": "Please submit a question related to ferry operations and maritime data. You can find information about available data and example questions on the 'About' page.",
+                "suggestion": "Try asking about ferry performance, fuel consumption, routes, schedules, or operational statistics."
+            }), 400
 
-    # Get the necessary objects from app config
-    data_dir = current_app.config["DATA_DIR"]
-    
-    # Get model_id from request if provided
-    llm_model_id = data.get("llm_model_id")
+        # Get the necessary objects from app config
+        data_dir = current_app.config["DATA_DIR"]
+        
+        # Get model_id from request if provided
+        llm_model_id = data.get("llm_model_id")
 
-    if not llm_model_id:
-        return jsonify({"error": "LLM Model ID is required"}), 400
+        if not llm_model_id:
+            return jsonify({"error": "LLM Model ID is required"}), 400
 
-    # Get API key from request header - only after validating the question
-    user_api_key = request.headers.get("X-API-Key")
-    if not user_api_key:
-        return jsonify({"error": "OpenRouter API key is required"}), 400
+        # Get API key from request header - only after validating the question
+        user_api_key = request.headers.get("X-API-Key")
+        if not user_api_key:
+            return jsonify({"error": "OpenRouter API key is required"}), 400
 
-    # Create a new instance of CustomDuckDbTools
-    duck_tools = CustomDuckDbTools(
-        data_dir=str(data_dir),
-        semantic_model=current_app.config["SEMANTIC_MODEL"],
-    )
+        # Create a new instance of CustomDuckDbTools
+        duck_tools = CustomDuckDbTools(
+            data_dir=str(data_dir),
+            semantic_model=current_app.config["SEMANTIC_MODEL"],
+        )
 
-    # Initialize additional tools
-    pandas_tools = PandasTools()
-    python_tools = PythonTools()
+        # Initialize additional tools
+        pandas_tools = PandasTools()
+        python_tools = PythonTools()
 
-
-    data_analyst = initialize_agent(data_dir, llm_model_id, [duck_tools, python_tools, pandas_tools], user_api_key)
-    
-    # Call the query service
-    return query(data=data, data_dir=data_dir, data_analyst=data_analyst)
+        data_analyst = initialize_agent(data_dir, llm_model_id, [duck_tools, python_tools, pandas_tools], user_api_key)
+        
+        # Call the query service and ensure we get the result
+        result = query(data=data, data_dir=data_dir, data_analyst=data_analyst)
+        
+        # Ensure we return a proper JSON response
+        if isinstance(result, tuple):
+            return result  # Flask tuple response (content, status_code)
+        else:
+            return jsonify(result)  # Convert to JSON response
+            
+    except Exception as e:
+        print(f"ERROR in query_endpoint: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
 
 
 @api_bp.route("/test", methods=["GET"])
