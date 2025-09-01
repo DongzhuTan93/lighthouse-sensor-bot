@@ -668,7 +668,7 @@ export default function QuestionForm() {
   return (
     <div className="bg-ferry-image min-h-screen">
       <GDPRBanner />
-      <main className="mx-auto py-6 flex justify-start px-8 lg:px-10">
+      <main className="container mx-auto py-6 flex justify-center px-8 lg:px-10">
         <div className="flex flex-col lg:flex-row lg:items-stretch gap-3 lg:gap-4 w-full max-w-full">
           <div className="w-full lg:w-[520px] xl:w-[560px] min-w-0 flex-shrink-0">
             <div className="sidebar-container rounded-xl p-4 lg:p-5 bg-white bg-opacity-95 shadow-lg border border-gray-100 overflow-hidden min-w-0 h-full">
